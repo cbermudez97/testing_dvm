@@ -17,7 +17,7 @@ jobs:
       - name: update version
         run: |
           dvm build up --no-verbose
-          echo 'PUBSPEC_VERSION=$(dvm patch up --no-verbose --keep-build)' >> $GITHUB_ENV
+          echo "PUBSPEC_VERSION=$(Sdvm patch up --no-verbose --keep-build)" >> $GITHUB_ENV
       - uses: EndBug/add-and-commit@v7
         with:
           add: pubspec.yaml
