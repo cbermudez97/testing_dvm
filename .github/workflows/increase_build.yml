@@ -1,0 +1,21 @@
+name: increase build
+on:
+  push:
+    branches:
+      - main
+jobs:
+  increasing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - run: pip install dart_version_manager
+      - run: dvm build up --no-verbose
+      - uses: EndBug/add-and-commit@v7
+        with:
+          add: pubspec.yaml
+          message: 'chore: update build'
+          default_author: github_action
