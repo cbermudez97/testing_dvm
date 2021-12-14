@@ -1,10 +1,10 @@
-name: increase build
+name: update patch
 on:
   push:
     branches:
       - main
 jobs:
-  increasing:
+  update version:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -12,10 +12,14 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
-      - run: pip install dart_version_manager
-      - run: dvm build up --no-verbose
+      - name: install dvm
+        run: pip install dart_version_manager
+      - name: update version
+        run: |
+          dvm build up --no-verbose
+          echo 'PUBSPEC_VERSION=$(dvm patch up --no-verbose --keep-build)' >> $GITHUB_ENV
       - uses: EndBug/add-and-commit@v7
         with:
           add: pubspec.yaml
-          message: 'chore: update build'
+          message: 'chore: update version to ${{env.PUBSPEC_VERSION}}'
           default_author: github_actions
