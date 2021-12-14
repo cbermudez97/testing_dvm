@@ -18,8 +18,11 @@ jobs:
         run: |
           dvm build up --no-verbose
           echo "PUBSPEC_VERSION=$(dvm patch up --no-verbose --keep-build)" >> $GITHUB_ENV
+      - name: build tag message
+        run: echo "TAG_NAME=v$(dvm major get --no-verbose).$(dvm minor get --no-verbose).$(dvm patch get --no-verbose)" >> $GITHUB_ENV
       - uses: EndBug/add-and-commit@v7
         with:
           add: pubspec.yaml
           message: 'chore: update version to ${{env.PUBSPEC_VERSION}}'
+          tag: '${{env.TAG_NAME}}'
           default_author: github_actions
